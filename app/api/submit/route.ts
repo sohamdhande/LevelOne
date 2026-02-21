@@ -30,9 +30,11 @@ export async function POST(req: NextRequest) {
         }
 
         // IP processing
-        const xForwardedFor = req.headers.get('x-forwarded-for');
-        const rawIp = xForwardedFor ? xForwardedFor.split(',')[0].trim() : (req.headers.get('x-real-ip') || 'unknown');
-        const ipHash = hashIp(rawIp);
+        const ip =
+            req.headers.get('x-nf-client-connection-ip') ||
+            req.headers.get('x-forwarded-for')?.split(',')[0] ||
+            'unknown';
+        const ipHash = hashIp(ip);
         const userAgent = req.headers.get('user-agent') || 'unknown';
 
         // Rate Limit Check
