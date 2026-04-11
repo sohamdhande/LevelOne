@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseAdmin } from '@/lib/supabase';
+import { supabase } from '@/lib/supabase';
 import { hashIp } from '@/lib/hash';
 import { isRateLimited } from '@/lib/rateLimit';
 
@@ -11,11 +11,9 @@ export async function POST(req: NextRequest) {
         const {
             name,
             email,
-            phone,
-            year,
-            early_access_interest,
-            price_vote_form,
-            biggest_struggle,
+            year_of_study,
+            portfolio_problem,
+            update_frequency,
             website_url // The honeypot field
         } = body;
 
@@ -25,7 +23,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ success: true, message: "Submission received" }, { status: 200 });
         }
 
-        if (!name || !email || !year || early_access_interest === undefined) {
+        if (!name || !email || !year_of_study) {
             return NextResponse.json({ error: 'Required fields missing' }, { status: 400 });
         }
 
@@ -43,18 +41,14 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Too many submissions limit (3 per 24h) reached.' }, { status: 429 });
         }
 
-        // Save to Submissions Table
-        const { error } = await supabaseAdmin.from('submissions').insert([
+        // Save to Waitlist Table
+        const { error } = await supabase.from('waitlist').insert([
             {
                 name,
                 email,
-                phone,
-                year,
-                early_access_interest,
-                price_vote_form,
-                biggest_struggle,
-                ip_hash: ipHash,
-                user_agent: userAgent
+                year_of_study,
+                portfolio_problem,
+                update_frequency
             }
         ]);
 
@@ -69,16 +63,7 @@ export async function POST(req: NextRequest) {
             return NextResponse.json({ error: 'Failed to process submission' }, { status: 500 });
         }
 
-        // Explicit form_submit event (server-side ensures it doesn't get skipped)
-        await supabaseAdmin.from('events').insert([
-            {
-                event_type: 'form_submit',
-                metadata: { page_id: 'landing_v1' },
-                ip_hash: ipHash
-            }
-        ]);
-
-        return NextResponse.json({ success: true, message: 'Welcome to Level One.' }, { status: 200 });
+        return NextResponse.json({ success: true, message: 'Welcome to Switchfolio.' }, { status: 200 });
 
     } catch (err: any) {
         console.error('Submission API Error', err);

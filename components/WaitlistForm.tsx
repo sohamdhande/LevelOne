@@ -3,9 +3,10 @@ import { useState } from 'react';
 
 interface WaitlistFormProps {
     onSuccess: () => void;
+    updateFrequency: string | null;
 }
 
-export default function WaitlistForm({ onSuccess }: WaitlistFormProps) {
+export default function WaitlistForm({ onSuccess, updateFrequency }: WaitlistFormProps) {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -33,10 +34,19 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps) {
         }
 
         try {
+            const payload = {
+                name: formData.name,
+                email: formData.email,
+                year_of_study: formData.year,
+                portfolio_problem: formData.biggest_struggle,
+                update_frequency: updateFrequency,
+                website_url: formData.website_url
+            };
+
             const res = await fetch('/api/submit', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(payload)
             });
 
             const data = await res.json();
@@ -153,35 +163,17 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps) {
             </div>
 
             <div>
-                <label className={labelClass}>Biggest placement struggle</label>
-                <textarea
-                    rows={2}
+                <label className={labelClass}>What's your biggest portfolio problem?</label>
+                <input
+                    type="text"
                     placeholder="Optional"
-                    className={inputClass + ' resize-none'}
+                    className={inputClass}
                     value={formData.biggest_struggle}
                     onChange={e => setFormData({ ...formData, biggest_struggle: e.target.value })}
-                ></textarea>
+                />
             </div>
 
-            <div>
-                <label className={labelClass}>Would you pay ₹1,999 for full season access? <span className="text-red-400">*</span></label>
-                <div className="flex gap-4 mt-1.5">
-                    {['yes', 'maybe', 'no'].map((opt) => (
-                        <label key={opt} className="flex items-center cursor-pointer group">
-                            <input
-                                required
-                                type="radio"
-                                name="price_vote"
-                                value={opt}
-                                checked={formData.price_vote_form === opt}
-                                onChange={e => setFormData({ ...formData, price_vote_form: e.target.value })}
-                                className="mr-1.5 accent-blue-500"
-                            />
-                            <span className="text-[13px] text-slate-400 capitalize group-hover:text-slate-300 transition-colors">{opt}</span>
-                        </label>
-                    ))}
-                </div>
-            </div>
+
 
             <div className="pt-3 border-t border-slate-800">
                 <label className="flex items-start cursor-pointer">
@@ -193,7 +185,7 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps) {
                         onChange={e => setFormData({ ...formData, early_access_interest: e.target.checked })}
                     />
                     <span className="text-[11px] text-slate-600 leading-relaxed">
-                        I agree to receive communications regarding early access to Level One and consent to have my responses recorded for demand validation.
+                        I agree to receive communications regarding early access to Switchfolio and consent to have my responses recorded for demand validation.
                     </span>
                 </label>
             </div>
@@ -203,7 +195,7 @@ export default function WaitlistForm({ onSuccess }: WaitlistFormProps) {
                 disabled={loading}
                 className="w-full mt-4 bg-blue-600 text-white font-semibold text-[13px] py-3 rounded-[3px] hover:bg-blue-500 transition-all duration-200 disabled:opacity-50 tracking-wide shadow-[0_0_16px_rgba(59,130,246,0.15)] hover:shadow-[0_0_24px_rgba(59,130,246,0.3)]"
             >
-                {loading ? 'Submitting...' : 'Join Early Access'}
+                {loading ? 'Submitting...' : 'Join the Waitlist'}
             </button>
         </form>
     );

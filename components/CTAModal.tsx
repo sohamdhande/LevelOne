@@ -3,17 +3,17 @@
 import { useState, useEffect } from 'react';
 import WaitlistForm from './WaitlistForm';
 
-export default function CTAModal() {
+interface CTAModalProps {
+    onSuccess?: () => void;
+    updateFrequency: string | null;
+}
+
+export default function CTAModal({ onSuccess, updateFrequency }: CTAModalProps) {
     const [isOpen, setIsOpen] = useState(false);
 
     useEffect(() => {
         if (isOpen) {
             document.body.classList.add('lock-scroll');
-            fetch('/api/event', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ event_type: 'form_open' })
-            }).catch(err => console.error('Failed logging form_open', err));
         } else {
             document.body.classList.remove('lock-scroll');
         }
@@ -23,11 +23,6 @@ export default function CTAModal() {
     }, [isOpen]);
 
     const handleOpenClick = () => {
-        fetch('/api/event', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ event_type: 'cta_click' })
-        }).catch(err => console.error('Failed logging cta_click', err));
         setIsOpen(true);
     };
 
@@ -39,14 +34,14 @@ export default function CTAModal() {
                 onClick={handleOpenClick}
                 className="w-full bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-[3px] font-semibold text-[13px] tracking-wide transition-all duration-200 shadow-[0_0_20px_rgba(59,130,246,0.2)] hover:shadow-[0_0_30px_rgba(59,130,246,0.35)]"
             >
-                Request Early Access
+                Get Early Access — It's Free
             </button>
 
             {isOpen && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/70 backdrop-blur-md">
                     <div className="bg-slate-900 border border-slate-800 rounded-[4px] shadow-2xl w-full max-w-lg overflow-hidden flex flex-col max-h-[90vh] animate-slide-up">
                         <div className="flex justify-between items-center px-6 py-5 border-b border-slate-800">
-                            <h2 className="text-[15px] font-bold tracking-tight text-white">Request Early Access</h2>
+                            <h2 className="text-[15px] font-bold tracking-tight text-white">Get Early Access to Switchfolio</h2>
                             <button
                                 onClick={close}
                                 className="text-slate-600 hover:text-slate-400 transition-colors"
@@ -58,7 +53,7 @@ export default function CTAModal() {
                             </button>
                         </div>
                         <div className="px-6 py-5 overflow-y-auto">
-                            <WaitlistForm onSuccess={close} />
+                            <WaitlistForm onSuccess={() => { close(); onSuccess?.(); }} updateFrequency={updateFrequency} />
                         </div>
                     </div>
                 </div>

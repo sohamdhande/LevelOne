@@ -1,36 +1,21 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Switchfolio ⚡️ 
 
-## Getting Started
+> **Your portfolio should switch for every interview. Yours doesn't.**
 
-First, run the development server:
+Switchfolio is a pre-launch landing page and waitlist capture system for a specialized portfolio dashboard. CS students lose interviews because their portfolio shows everything to everyone. Switchfolio lets you show the right projects to the right company — in one click, before you walk in.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+✨ *Built by a CS student, for CS students.*
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🚀 Features
+- **Dynamic Landing Page:** Clean, dark-mode aesthetic with interactive hover states.
+- **Waitlist Capture Modal:** Intercepts intent, collects standard contact info and pain points ("What's your biggest portfolio problem?").
+- **Live Counter:** Client-side real-time fetch showing the exact waitlist count natively from the database. 
+- **Analytics:** Silent background page view logging directly to a Supabase bucket. 
+- **Fully Responsive:** Optimized across mobile, tablet, and widescreen.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🛠 Tech Stack
+- **Framework:** Next.js (App Router, React 18)
+- **Styling:** TailwindCSS 
+- **Database Backend:** Supabase (PostgreSQL)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.

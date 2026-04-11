@@ -5,8 +5,8 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'], weight: ['400', '500', '600', '700', '800'] });
 
 export const metadata: Metadata = {
-    title: 'Level One — Placement Season Control System',
-    description: 'A structured resume variant control system built for competitive engineering placement season.',
+    title: 'Switchfolio — Switch your portfolio. Win the interview.',
+    description: 'A dashboard where you control exactly what your portfolio shows.',
 };
 
 export default function RootLayout({
